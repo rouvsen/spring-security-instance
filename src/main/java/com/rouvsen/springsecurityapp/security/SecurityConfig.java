@@ -48,6 +48,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(x -> x.requestMatchers("/public/**", "/auth/**").permitAll())
+                .authorizeHttpRequests(x -> x.requestMatchers("/private/admin/**").hasRole("ADMIN"))
+                .authorizeHttpRequests(x -> x.requestMatchers("/private/user/**").hasAnyRole("ADMIN", "USER"))
                 .authorizeHttpRequests(x -> x.anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
         return security.build();
